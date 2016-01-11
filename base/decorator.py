@@ -58,21 +58,46 @@ def myfunc3(a,b):
 
 
 '''第四种情况：下面的这种写法很不一样，比较通用，但是局限性在于装饰的部分职能在func之前执行，不能对func前后都装饰'''
-def deco5(name,**kwargs):
+def deco4(name,**kwargs):
     def wrapper(func):
         print 'deco5 start ', name,kwargs
         print 'deco5 stop ', name,kwargs
         return func
     return wrapper
 
-@deco5(name='demo_process',pid='100')
-def myfunc5(a,b):
+@deco4(name='demo_process',pid='100')
+def myfunc4(a,b):
     print 'start myfunc ', a
     print 'stop myfunc ', b
 
 
-myfunc5('hello','world')
+myfunc4('hello','world')
 
+'''第五种情况：装饰器本身带参数，被装饰的函数也带参数。下面的写法局限性在于装饰的部分职能在func之前执行，不能对func前后都装饰'''
+def deco5(route):
+    def wrapper(func):
+        print 'before route{}'.format(route)
+        print 'after route{}'.format(route)
+        return func
+    return wrapper
+
+@deco5(route='/app/path')
+def myfunc5(name):
+    print 'hello {}'.format(name)
+
+'''第六种情况：装饰器本身带参数，被装饰的函数也带参数'''
+def deco6(route):
+    def wrapper(func):
+        def wrapper2(*args):
+            print 'before route{}'.format(route)
+            func(*args)
+            print 'after route{}'.format(route)
+        return wrapper2
+    return wrapper
+
+@deco6(route='/app/path')
+def myfunc6(name):
+    print 'hello {}'.format(name)
 
 '''
 装饰器调用顺序
@@ -105,5 +130,8 @@ class Student(object):
 # s = Student('Li Ming')
 # print s.name
 
+# practice
+if __name__ == '__main__':
+    pass
 
 
