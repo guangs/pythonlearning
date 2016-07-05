@@ -1,0 +1,1705 @@
+##Python学习##
+
+python脚本的编译执行
+import py_compile
+py_compile.compile('hello.py')  //生成hello.pyc文件
+
+python -O -m py_compile hello.py //生成hello.pyo文件，也是编译后的文件
+
+
+id函数查看变量值在内存中的地址
+如查看变量a的值的内存地址： id(a)
+
+3**2 //幂运算
+
+数值运算符 +, -, *, /, //, %
+赋值运算符: =, +=, -=, *=, /=, //=, %=
+关系运算符 >, <, ==,!=, <=, >=
+逻辑运算符 and or not
+
+运算符(优先级由低到高)
+lambda
+or
+and
+not
+in, not in
+is, is not
+<, <=, >, >=, ==, !=
+|
+^
+&
+<<, >>
++, -
+*,/,//,%
+正负号+x,-x
+按位翻转~x
+**   //java中幂运算用4^3，或者import Math; Math.pow(4,3)
+
+int与str类型的转换
+int(a)将a转为int类型
+str(a)将a转为str类型
+
+for 循环
+range(10)
+range(1,10,2)
+xrange(10)
+for index in range(len(sequece)):
+for c in sequence:
+
+repr与str
+print repr('hello \n') 得到'hello \n' 注意, 转义字符在repr之中是不能起到转义的作用的，会原样输出
+print 'hello \n' 得到 hello
+print r'hello \n' 得到 hello \n ,注意，字符串前面加r，代表的是原始字符串， 原始字符串关闭了转义机制，即\不再表示转义
+
+python数据类型 （在做数据运算的时候，需要知道数据类型）
+数字- int, long(如2L或2l), float(如1.0, 3e+7), complex(如2j或2J)
+字符串
+列表
+元组
+字典
+
+字符串，元组和列表都属于序列
+序列的基本操作有：索引，切片，加乘，len in，min max，cmp()，index()
+
+单引号，双引号，三引号
+
+数字运算： =, +=, -=, *=, /=, //=, %=
+字符串运算：索引(如a[1])，切片(如a[1:4])，步长(如a[::2], a[-1:-2:-1])
+
+python字符串：普通字符串（name='lisi'），Unicode字符串（name=u'lisi'），原始字符串(r'lisi')(也叫正则符串raw string，在正则符串中，不需要转意\,即\n是两个字符)
+unicode字符串与普通字符串之间的转换：利用str类的decode和encode方法
+ustrs = u'hello'
+strs = ustrs.encode("utf-8")  //unicode 字符串编码后得到普通字符串
+ustrs = strs.decode("utf-8") //普通字符串经过decode得到unicode字符串
+
+java中只有一种普通字符串，unicode字符用'\uXXXX'表示，正则字符串中的\需要转译,即'\\'
+
+raw字符串与普通字符串的区别：在元字符串中，不需要转意\,即\n是两个字符
+如 print r'\n' 得到的是\n
+print '\n' 得到的是回车
+
+unicode字符与普通字符之间的转换
+利用ord,chr,unichr这样的内建函数
+普通字符转为unicode字符：unichr(ord('h')) //得到u'h'
+unicode字符转为普通字符: chr(ord(u'h')) //德奥'h'
+
+字符与ASC码的转换： ord和chr内建函数
+ord('a')或者ord(u'a')或者ord(r'a') //得到97
+chr(97) //得到'a'
+unichr(97) //得到u'a'
+chr用来看一个字符的ASC码
+
+
+测试一个对象是否是字符串
+方法一
+利用内建函数isinstance和basestring
+isinstance(Obj,basestring)//返回true，则是字符串，否则不是。basestring是str和unicode类型的共同基类。 java中的用法 obj instanceof Object(前面是对象，后面是类名)
+如 a = '123'
+   b = 123
+   isinstance(a,basestring) //返回True
+   isinstance(b,basestring) //返回False
+方法二
+利用type和is
+如
+def isExactlyStr(Obj):
+   return type(Obj) is type('')
+但是方法二有局限性，它无法判断unicode字符串。所有方法一要更好
+
+方法三
+通过检查一个对象的行为是否和字符串一样,其实下面的这个函数定义的还不够，只是从一个方面说明obj是否像字符串
+def isStringLike(Obj):
+    try:
+        Obj + ""
+    except:
+        return false
+    else:
+        return true
+
+字符串对齐：左对齐，右对齐，居中对齐
+这正是string对象的ljust,rjust,center方法解决的问题
+a='hello'
+a.ljust(20)//总宽度是20，hello在左侧
+a.rjust(20)
+a.center(20)
+a.ljust(20,'#')//总宽度是20，hello在左侧,其他部分用#号来填充
+a.rjust(20,'#')
+a.center(20,'#')
+
+去除字符串两端的空格
+这是string对象的lstrip,rstrip,strip来解决的事，该方法不需要参数
+
+
+合并字符串 (性能由高到低排序)
+''.join()
+如：a ='hello'
+    b ='world'
+    l = []  //想利用''.join()方法合并a和b,需要利用一个list来做容纳他们
+    l.append(a)
+    l.append(b)
+    ''.join(l) //这样就得到了helloworld 相等于a+b但是相率更高
+% 格式化字符串操作
+如 “%s%s” % (a,b) //这样就得到了helloworld
++ 如a+b得到helloworld
+
+>>> s = 'hello world'
+>>> s.split(' ')
+['hello', 'world']
+>>> list(s)
+['h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd']
+
+将字符串逐字符或逐词反转
+逐字符反转
+利用步长为-1的切边
+如 a = 'hello'
+a[::-1] 得到'olleh'  //这样就得到了逐字符的反转
+逐单词反转
+先把单词放入list，将list反转，在用' '.join()合并，各单词间加入空格
+如 a = 'hello world'
+   l = a.split(' ') //得到['hello','world']
+   l.reverse()  //得到['world','hello']
+   ' '.join(l)//这样得到了'world hello'
+
+
+检查字符串中是否包含某字符集合中的字符
+利用set的difference方法
+先把str变成set
+在用set的difference
+剩下的是否和原来的长度一致，如果不一致，说明包含，如果一致，说明不包含
+
+
+过滤字符串中不属于指定字符集合中的字符
+import String
+t = String.maketrans('','') //不翻译
+setstr='123'
+givestr='abc123'
+givestr.translate(t,setstr)//得到'abc'.
+
+字符串中的isupper(),islower(),istitle()
+
+
+替换字符串中的子串
+'my name is %(name)s' % {'name':'shi guang'}  //得到my name is shi guang
+String.replace(old,new)
+re模块(正则表达式)
+re.sub(pattern,replacement,string)
+
+正则表达式
+w s d b + . * ? ^ $ () [] {} | \
+[]用来指定一个字符集
+[012]
+[0-9]
+[^0-9]
+[a-zA-Z0-9]
+^用来指定开头
+$用来指定结尾
+\w 相当于[a-zA-Z0-9]
+\W 相当于[^a-zA-Z0-9]
+\s 匹配任何空白字符
+\S 匹配任何非空白字符
+\d 相当于[0-9]
+\D 相当于[^0-9]
+\b 匹配一个单词
+{} 表示前面字符重复的次数
+* 表示前面字符重复0次或以上
++ 表示前面字符重复1次或以上
+? 表示前面字符重复0次或1次(即前面符号可有可无)。另外一个作用就是放在重复的后面表示非贪婪模式
+  如 p = r'ab*?' 与r'ab*'的区别就是后者是贪婪模式，前者是非贪婪模式。前者匹配ab，后者匹配abbbbbb（尽可能匹配更多的b）
+(pattern1|pattern2) 小括号与或来起到分组的作用.
+
+正则表达式的编译
+如果正则表达式经常使用，为了更快的速度，所以讲正则表达式先编译，这样比解释更快
+re.compile()
+如 p = r'\d{3,4}-?\d{8}'
+p_tel = re.compile(p)
+p_tel.findall('010-12345678')
+
+re.compile(p,re.I)  //re.I是指不区分字母大小写，在compile的时候可以加这样的属性，更加灵活
+
+re.match()  //从开头位置匹配 m = re.match(pattern,string) , m.group() 得到匹配的结果
+re.search()  //从各个位置查找匹配  m = re.search(pattern,string),  m.group() 得到匹配的结果
+re.sub() //替换substitute  re.sub(pattern,replacement,string)直接返回sub后的结果，str类型
+re.split() //分割 re.split(pattern,string)直接返回split后的结果，list类型
+re.findall() //查询 re.findall(pattern, string)直接返回find后的结果，list类型
+
+一些flag
+re.I //忽略大小写
+re.M //要匹配的字符串是多行的doc string
+re.X //定义的正则是多行的doc string
+
+正则分组
+(pattern1|pattern2) 小括号与或来起到分组的作用. 分组的另一个作用是控制返回的值
+如
+s = 'hello name=guang yes hello name=kevin yes'
+p1= r'hello name=\w+ yes'
+p2= r'hello name=(\w+) yes'
+re.findall(p1,s) //返回的是['hello name=guang yes', 'hello name=kevin yes']
+re.findall(p2,s) //返回的是['guang', 'kevin']
+这就是小括号分组的另一个作用
+
+
+
+字典与函数的结合，就可以替代if或者switch(也是python中没有switch语句的原因)
+
+
+python内置函数
+abs()
+max()
+min()
+len()
+divmod() // divmod(7,2) 返回(3,1)
+pow() //pow(3,2) 返回9. Java中的Math类里也有pow()
+round() // round(2.5) 返回3.0
+callable() //用来测试某个函数是否可被调用，比如若没定义的话，则不能调用，返回False。 callable(min)
+isinstance() //isinstance(l,list)
+cmp()//cmp('hello','helloworld')
+range()//
+xrange()//
+type()
+int()
+long()
+float()
+complex()
+str()
+list()
+tuple()
+dict()
+hex()
+oct()
+chr()//chr(97)返回'a'
+ord() //ord('a')返回97
+
+字符串的内置方法
+capitablize()
+split()
+replace()
+
+String模块
+String.replace()
+
+序列处理的内置函数
+len()
+max()
+min()
+zip() //zip(sequence1,sequence2)
+filter() //filter(function, seqence)
+map() //map(function, seqence1, sequence2)
+reduce()// reduce(function, seqence) 。reduce与递归.
+lambda函数常常用在filter,map,reduce参数里，匿名函数作为参数来使用是常见的
+zip与map在并行遍历的区别
+List1=[1,2,3]
+List2=[4,5,6]
+List3=[7,8]
+zip(List1,List2,List3)//得到[(1,4,7),(2,5,8)]
+map(None,List1,List2,List3)//得到[(1,4,7),(2,5,8),(3,6,None)]
+map(min,List1,List2,List3)//得到[1,2,3] 其中min是内置函数
+filter(None,[0,1,2,3,4,5]) //得到[1,2,3,4,5]。filter是去掉为false的item，或者function的结果为false的item，其中function只有一个参数
+filter(lambda x:x*2,[0,1,2,3,4,5]) //得到[1,2,3,4,5]。因为item 0 * 2 为0，仍为false，所以要filter掉这个item 0
+reduce(lambda x,y:x+y,[0,1,2,3,4,5]) //得到15,即0+1+2+3+4+5的总和，reduce是一种迭代，相当于((((0+1)+2)+3)+4)+5
+
+
+模块与包
+模块名与文件名是相同的
+import模块是根据sys.path来查找导入的
+
+包
+目录里面有一个名字为__init__.py的文件(文件可以为空)，则这个目录就是一个包
+创建包的步骤
+1. 创建一个目录，目录名为包名
+2. 在目录下面创建一个名字为__init__.py的文件，该文件可以为空
+3. 根据需要将相关的模块或者子包放入该目录
+
+浅copy与深copy
+import copy
+copy.copy() //浅copy. 只copy父对象,不会拷贝对象的内部的子对象。如l = [1,2,3,['a','b','c'],4] ,若对l中的子列表['a','b','c']有所改动，则会影响到l的浅copy对象上
+copy.deepcopy() //深copy.
+集合类(tuple, list, set)之间的深拷贝还可以通过新创建一个集合实现，如alist = list(blist)
+
+
+文件操作
+打开文件  //open(filename,mode)函数，返回文件对象。mode为'r', 'r+', 'w', 'w+', 'a', 'a+', 'rU'
+读取
+写入
+内容查找和替换
+删除复制重命名
+目录操作
+
+'r' : 以只读模式打开
+'r+' : 以读写模式打开, 写的指针刚开始指在文件开头, 因此会覆写文件
+'w' : 清空文件, 不能使用 <file>.read*() 方法.  (read(), readline(), readlines())
+'w+' : 清空文件, 可以使用 <file>.read*() 方法.
+'a' : 向一个文件追加内容,  不能使用 .read*()
+'a+' : 向一个文件追加内容, 可以使用 .read*()
+'rU' : 自动探测行尾符, 如果以这种模式打开一个文件, 该文件对象将获得一个 newlines 属性, 当还未读到任何行尾时, <file>.newlines 属性等于 None, 读到了则可能是'\n', '\r\n', '\r' 中的一种. (什么系统的换行符是 \r
+
+
+文件对象的方法
+read()
+write()
+close()  //python中读写文件是由文件自身的操作完成的，所以文件操作中需要close，读写完成的时候用close关闭文件。而java读写是通过流或者RandomAccessFile来完成的，所以close的是流或者RandomAccessFile
+readline()
+readlines() //返回一个列表，每个元素是一行的内容
+next()  //也是读取一行，这点和readline相同。与readline不同的是，readline读到最后，返回[]，而next会提示停止迭代
+writelines() //参数是一个列表，列表中的每个元素就是要写的每一行
+seek() // f.seek(0,0)将指针放到开头，f.seek(0,2)将指针放到尾部
+flush() //作用是在不想close文件的情况下，将write或者writelines写入的内容提交到磁盘文件中去
+
+文件对象是可迭代的
+f = open('test.txt','r')
+如 for line in f:
+       print line
+打印每一行
+
+for line in f.readlines():
+    print line
+
+line = f.readline()
+while line:
+    print line
+    line = f.readline()
+
+with open('test.txt','r') as tempfile:
+    for line in tempfile:
+        print line
+
+对文件的关键字进行替换，替换后的结果写回原文件？
+
+OS模块
+mkdir('c')
+makedires('a/b/c')  //相当于mkdir -p /a/b/c
+rmdir('c')
+removedirs('a/b/c') //removedirs('a/b/c')
+listdir('.')  //
+getcwd()
+chdir('C:\Users\gushi\Desktop\work')
+walk('C:\Users\gushi\Desktop\work') //for path,dirs,files in os.walk('.')
+system('ls -lrt')
+对目录的遍历？
+#!/usr/bin/python
+import os
+
+def walkfiles(path):
+    for root,dirs,files in os.walk(path):
+        for f in files:
+            print os.path.join(root,f)
+        for d in dirs:
+            walkfiles(d)
+
+if __name__ == '__main__':
+    path = '/home/guang/temp/dir'
+    walkfiles(path)
+
+os.path模块
+os.path.exists(path)
+os.path.join(path,file) //return path/file
+os.path.abspath(path) // return full path
+os.path.isdir(path)
+os.path.isfile(path)
+os.path.basename(path)
+os.path.dirname(path)
+
+
+如何想输出中文，需要在文档中加入这一句
+#coding-utf8
+#coding=utf-8
+#-*- coding: utf-8 -*-
+
+
+异常：
+try：
+except IOError：
+except NameError:
+except Exception:
+else:
+finally: //文件关闭，释放锁，把数据库链接返还给连接池等操作一般需要放在finally中
+raise //TypeError, NameError, IOError, SyntaxError, KeyError, ValueError
+
+自定义异常
+>>> class MyException(Exception):
+... 	def __init__(self,display):
+...     Exception.__init__(self)
+... 		self.display = display
+... 	def __str__(self):
+... 		return self.display
+...
+>>> e = MyException('hello')
+>>> print e
+hello
+
+Python子类不能继承父类的哪些：private
+Python子类不能重写父类的哪些：private static ?
+Python中类的初始化方法是__init__()，因此父类、子类的初始化方法都是这个，如果子类不实现__init__()这个函数，初始化时调用父类的初始化函数，
+如果子类实现了这个函数，则要在这个函数里显式调用一下父类的__init__()，这跟C++,jAVA不一样，他们是自动调用父类构造函数的。
+
+正则表达式
+文档生成
+单元测试
+线程
+数据库
+网页浏览器
+CGI
+FTP
+电子邮件
+XML
+XML-RPC
+HTML
+GUI
+Tk
+
+#########################
+python module of the week
+#########################
+
+import array
+str1 = 'hello world'
+array.array('c', str1)
+array.array('i',xrange(10))
+
+dirs = ('a','b','c')
+os.path.join(*dirs)  //得到'a/b/c'
+
+s = 'a/b/c'
+s.split('/') 得到['a','b','c']
+
+os.path.expanduser('~xen') //得到'/home/xen'
+
+
+
+处理文件和目录，os.path模块
+os.path.basename('a/b/c') 得到'c'
+os.path.dirname('a/b/c') 得到'a/b'
+os.path.expanduser('~xen')得到'/home/xen'
+os.path.isdir()
+os.path.isfile()
+os.path.exists()
+os.path.getmtime()
+os.path.getctime()
+os.path.getatime()
+os.path.getsize()
+os.path.join()
+os.path.abspath()
+os.path.expandvars('$HOME/guang')//从系统环境变量中取值，得到/home/xen/guang
+os.path.split('a/b/c')得到('a/b','c')
+os.path.splitext('a/b/c.txt')得到('a/b/c','.txt')
+os.path.walk(top,func,arg) //注意与os.walk()的区别
+
+文件遍历
+方法一：不用os.walk，不用os.path.walk
+方法二：用os.walk
+方法三：用os.path.walk  //可读性不好，在python3中，已被os.walk取代
+
+文件信息
+os.stat()用来得到文件的具体信息
+f ='/home/xen/guang/temp/f1'
+f_info = os.stat(f)
+f_info.st_size //得到文件的大小
+f_info.st_mtime //last modify time
+import time
+time.ctime(f_info.st_mtime)
+
+读取文件
+fileinput模块，可以用来读取多个文件line by line
+import fileinput
+files = sys.argv[1:]
+for line in fileinput.input(files):
+    print line  //每个line就是一个文件的一行
+
+临时文件
+import tempfile
+temp = tempfile.TemporaryFile() //一个好处是，不用担心与其他文件重名，不用担心会被其他程序引用或者修改，close以后自动删除
+try:
+    temp.write('hello, world')
+    temp.seek(0,0)
+    print temp.read()
+finally:
+    temp.close()  //在关闭临时文件的时候，会自动删除这个临时文件。这也是用tempfile.TemporaryFile()来创建临时文件的好处之一
+
+
+随机读取文件
+import linecache
+line = linecache.getline('/home/xen/guang/1.py',2)  //得到文件1.py的第2行
+print line
+
+
+copy文件
+方法一：os.system
+os.system('cp 1.py ./temp')
+os.system('cp %s %s' % ('1.py','./temp'))
+方法二: shutil.copy
+shutil.copy('1.py','./temp')
+
+
+unicode字符的编解码(从unicode字符到字节byte，从字节byte到unicode字符)，模块codecs。
+encoding and decoding
+写的过程，一般是将字符变成二进制，是编码的过程
+读的过程，一般是将二进制变成字符，是解码的过程
+codecs对文件的操作
+codecs.open(filename, mode='rt',encoding='utf-8') // mode ='rt'是指read txt，此外还有'rb'，指read binary
+codecs.open(filename, mode='wt',encoding='utf-16') //写
+例子
+with codecs.open(filename, mode='rt', encoding='utf-8') as f:
+    print repr(f.read())
+with codecs.open(filename, mode='wt', encoding='utf-8') as f:
+    f.write(u'pi: \u03c0')
+
+with语句等价于try,finally
+
+with open("/tmp/foo.txt") as file:
+    data = file.read()
+等价于
+file = open("/tmp/foo.txt")
+try:
+    data = file.read()
+finally:
+    file.close()
+
+codecs对Socket的操作
+网络socket也是字节流，所以，在写入socket之前，unicode数据也需要encode成bytes
+incoming = codecs.getreader('utf-8')(PassThrough(s.makefile('r')))
+outgoing = codecs.getwriter('utf-8')(PassThrough(s.makefile('w')))
+
+
+处理二进制数据，struct模块
+
+实现一个解析抓包的程序
+
+
+python常用库（官网：http://docs.python.org/release/2.5.2/lib/lib.html）
+import os // 与操作系统相关的函数：如目录，文件，系统操作system，fork，exec语句, environ, getenv,spawn族等等 os.path os.system
+import sys // 一些系统参数和常见处理函数, sys.argv[0] sys.argv[1:]
+import subprocess // 替换os的一些老的开发函数如管道
+import multiprocessing // 进程间通信，如进程，消息队列，共享内存
+import threading // 线程间通信，如线程，线程队列，线程锁
+import thread // 线程间通信另一种创建方式库
+import Queue // 消息队列
+import time // 时间操作的函数
+import signal // 信号处理函数，如signal
+import socket // socket通信函数，如socket,accept,gethostname,connect,listen,connect等等
+import urllib
+import urllib2
+import praselib
+import smtplib
+import xmllib
+import telnetlib
+import pexpect
+import shutil
+import commands
+
+os.system使用shell来执行系统
+os.system('ls -lrt')
+
+os.fork - 复制当前进程
+pid = os.fork()  //os.fork(),将产生一个新的进程。fork被调用一次，但是返回两次。返回0给子进程，返回pid(非0)给父进程
+父子进程都将执行下面的code
+#
+if pid:
+print ’ parent process’ //父进程
+else:
+print ’child process’  //子进程，因子进程得到的返回值是0
+#
+os.wait函数用于(父进程)等待子进程结束,返回包含两个元素的元组，子进程号pid，以及子进程的退出状态，返回状态为0，表明子进程成功完成。
+要指示父进程等候一个指定的子进程终止，可在父进程中使用os.waitpid函数
+
+
+exec语句-用来执行储存在字符串中的Python语句
+exec 'print "abc"' 或 exec('print "abc"')
+
+scope = {} //先定义一个字典，相当于一个命名空间
+exec "sqrt = 1" in scope
+scope.['sqrt'] //结果是1
+
+#load config file
+    configstring="from %s import *"%sys.argv[1]
+    exec configstring
+
+
+eval语句用来计算存储在字符串中的有效Python表达式
+eval('1+1')  //得到2
+
+
+os.spawn族操作，生成一个新的process。主要和fork的区别，fork是分叉，复制了原来process的环境，执行一样的代码，而spawn则不是，spawn是另起一个新进程。
+os.spawnl
+os.spawnle
+os.spawnlp
+例如：os.spawnlp(os.P_WAIT, 'ls', '-l', '/tmp/')  //mode为os.P_WAIT，返回的是子进程退出的状态
+      os.spawnlp(os.P_NOWAIT, 'ls', '-l', '/tmp/') //mode为os.P_NOWAIT，返回的是子进程的pid
+os.spawnlpe
+os.spawnv
+os.spawnve
+os.spawnvp
+os.spawnvpe
+
+
+subprocess模块
+subprocess.call(['ls','-l']) //相当于os.system(),可替代os.system
+subprocess.call('ls -l', shell=True)  //和上面的一样，只是shell=True，这样ls -l可以写到一个字符串里. 执行多个shell命令('ls -l; pwd; cd ..',shell=True)
+subprocess.call的返回值是退出的状态，0为成功
+subprocess.check_call('ls -l', shell=True) //用法和subprocess.call一样，区别是如果执行失败，退出状态不为0，则会抛出一个异常
+output = subprocess.check_output('ls -l', shell=True) //和subprocess.call用法一样，区别是将执行后的输出返回
+
+subprocess中的Popen类
+proc = subprocess.Popen('ls -l',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE) //返回一个Popen类的instance. stdout和stderr都被重定向到PIPE中(stdout放的是正确执行的输出，stderr放的是出错的输出)
+(stdout,stderr)= proc.communicate()  //communicate的作用是读取自己的PIPE，他的返回值是一个元组，第一个元素是stdout，第二个元素是stderr. communicate的作用是将Popen中ls -l执行的结果从PIPE中读出来。
+
+多个process之间的通信
+cat = subprocess.Popen([’cat’, ’index.rst’],
+stdout=subprocess.PIPE,
+)
+grep = subprocess.Popen([’grep’, ’.. include::’],
+stdin=cat.stdout,  //cat process的输出成为grep process的输入
+stdout=subprocess.PIPE,
+)
+
+
+sigal模块
+def receive_signal(signum, stack): //定义一个sigal handler，当收到信号的时候，用来处理这个事件
+    print 'Received:', signum
+
+signal.signal(signal.SIGUSR1, receive_signal) //注册signal SIGUSR1 与handler
+signal.signal(signal.SIGUSR2, receive_signal) //注册signal SIGUSR2 与handler
+
+print 'My PID is:', os.getpid()
+while True:
+    print 'Waiting...'
+    time.sleep(3)
+此时执行kill -SIGUSR1 <pid>,或者 kill -SIGUSR2 <pid> 就会触发对应的handler，即receive_signal(会打印出signum)
+
+发送signal
+os.kill(pid,sig)
+
+忽略signal
+signal.signal(signal.SIGINT, signal.SIG_IGN) //注册的使用signal.SIG_IGN作为handler即可
+
+
+Python,Java,Shell中函数的比较
+1. Java中的方法必须是定义返回值类型的(即便void), Python中的函数和方法是不需要定义返回值类型的，Shell中也不需要定义返回值类型
+2. Java中可以定义参数列表，python中也可以定义参数列表，Shell中不定义参数列表
+总结：java既定义返回值类型，也定义参数列表；python只需定义参数列表；shell中什么都不用定义(python是可以有返回值的，shell中的返回值，一种就是标准输出，一种是通过return，这两者还有一定的区别，return是退出的状态，只能return 整数值，标准输出是返回值，调用者通过 $(func)来得到标准输出，通过$?来得到执行的状态。shell中的一个函数相当于一个自定义的command)
+
+
+
+多线程threading模块
+thread是比较底层的模块，threading是对thread做了一些包装的，可以更加方便的被使用
+python多线程执行和java一样，也是有两种方式，一种方式是继承threading.Thread类，override run方法，一种方式是定义task方法，然后用thread类执行(java的task必须要实现runnable接口，python则不必这样).与java一样，两种方式常用后者
+t = threading.Thread(name='threadname', target=taskfunc, args=(1,2,3)) //创建一个线程,去执行taskfunc函数，参数是args
+t.setDaemon() //设为守护线程
+t.start() //启动线程
+t.join() // 本线程余下的代码(join之后的代码)要等t线程执行完后再执行
+t.join(5)  // 本线程余下的代码(join之后的代码)要等t线程执行5s后再执行
+t.isAlive() //线程t是否alive
+t.name  //线程的名字
+t = threading.currentThread() //返回当前thread对象
+threading.currentThread().getName() //返回当前线程的名字
+threading.enumerate()  //列出该进程的所有alive的线程
+lock = threading.Lock() //普通的锁
+lock.acquire()
+lock.release()
+lock = threading.RLock() //可重入锁re-entrant lock, 可重入锁使用的地方是，同一线程，多处代码需要获得锁，则使用可重入锁。对不同线程来说，和普通锁是一样的。
+                           可重入锁与普通锁的区别在于，针对同一线程上。比如同一线程代码里有递归的情况，则需要使用可重入锁。
+                           http://www.cnblogs.com/bjdxy/archive/2012/12/25/2832380.html
+                           In a situation where separate code from the same thread needs to “reacquire” the lock, use an RLock instead
+cond = threading.Condition() //Conditon 除了提供与Lock类似的acquire和release方法外，还提供了wait和notify方法
+cond.wait()
+cond.notify()
+cond.notifyAll()
+cond.acquire()
+cond.release()
+
+threading.Event()  //通常用于线程间通信
+线程间的通信
+Condition的wait，notifyAll算是一种通信方式
+更通用的方式是使用threading.Event对象
+e = threading.Event()
+e.wait() //等待，直到Event的信号为True
+event_is_set = e.wait(timeout=10) //等10秒，超时后不再等待，返回值来说明是否等到了Event的信号，True意味着Event的信号为True
+e.set() //设置Event对象内部信号为True
+e.clear()//设置Event对象内部信号为False
+e.isSet()//查看Event信号的状态
+
+local_data = threading.local() //定义一个thread-local的数据，它通过为每个线程提供一个独立的变量副本解决了变量并发访问的冲突问题
+local_data.value = 1000
+
+daemon thread
+守护线程的特点是python程序(即进程)不必等他执行完就可以退出。对应一般的线程来说，程序要等他们都执行完了才能够退出，但是对应daemon thread来说，程序不必等他就可以退出
+程序一旦退出，则daemon thread自然也死掉
+如果需要让程序等deamon thread执行完才退出的话，需要用到join()方法
+
+以下这两种写法是等同的，相对来说with语句更加简单，try语句更加易理解。with语句里会暗含lock的获取与释放
+with lock:
+    logging.debug(’Lock acquired via with’)
+
+lock.acquire()
+try:
+    logging.debug(’Lock acquired directly’)
+finally:
+    lock.release()
+
+with cond:
+    cond.wait()
+with cond:
+    cond.notifyAll()
+相当于
+cond.acquire()
+try:
+    cond.wait()
+finally:
+    cond.release()
+cond.acquire()
+try:
+    cond.notifyAll()
+finally:
+    cond.release()
+
+threading模块总结：有Thread,Lock,RLock,Condition,Event几个重要的类，有currentThread,enumerate几个重要的函数
+Thread中有start,join方法
+Lock,RLock,Condition中有acquire,release方法
+Condition中有wait,notify,notifyAll方法
+Event中有wait,set,clear方法
+
+多进程多线程情况下，应该在什么地方加锁?即在何处加锁
+1. 在共享的资源类里面加锁，对读写操作，写写操作加锁。在‘资源’处加锁是一种在源头加锁的思想
+2. 在Thread启动的task里面加锁，这是在‘互操作过程’加锁的思想
+3. 如果自定义了Thread，也可以在Thread的run方法里加锁，其实和2的思想一致，都是在‘互操作过程’加锁的思想
+
+多进程multiprocessing模块(与threading模块的api极为类似)
+p = multiprocessing.Process(name=’processname’,target=taskfunc,args=(1,)) //创建一个进程，执行taskfunc 函数, args是参数。新的子进程会import当前进程的这个模块文件
+p.start() //开始执行
+
+p = multiprocessing.current_process() //返回当前的process对象
+p.name //process的名字
+p.pid //process的pid
+p.exitcode //process的退出状态
+
+守护进程 //程序不等守护进程就可以退出，主程序一旦退出，守护进程也将被停止
+p = multiprocessing.Process(name='daemon', target=taskfunc)
+p.daemon = True //设置process为守护进程
+p.join() //意味着主程序将等待daemon进程(即,p进程)执行完，然后再继续执行余下的代码(余下是指join之后的)
+p.join(10)//等10s p进程
+p.terminate() //用来终止p进程。在python中线程是不建议人为终止的，因此Thread对象也没有相对应的方法
+
+python多进程执行和多线程一样，也是有两种方式，一种方式是继承multiprocessing.Process类，override run方法，一种方式是定义task函数，然后用Process类执行，两种方式常用后者
+
+e = multiprocessing.Event()
+lock = multiprocessing.Lock()
+condition = multiprocessing.Condition()
+
+获得当前线程的id(name),用threading.currentThread().getName
+获得当前线程的pid，用os.getpid()
+
+网络相关的
+socket， socket的两个重要参数：address family, socket type  //socket是操作系统提供的接口，python只是提供了一个包装以便能够访问底层的操作系统的socket接口
+三个address familiy
+AF_INET - ipv4 最常用
+AF_INET6 - ipv6
+AF_UNIX - is the address family for UNIX Domain Sockets (UDS),
+两个socket type
+SOCK_DGRAM - UDP
+SOCK_STREAM - TCP
+
+hostname = socket.gethostname() //当前系统的hostname
+ip = socket.gethostbyname(host) //返回ip
+hostname, aliases, addresses = socket.gethostbyname_ex(host) //返回所有ip，别名等信息，更详细, 参数可以是host也可以是ip
+hostname, aliases, addresses = socket.gethostbyaddr(’192.168.1.8’) //do a “reverse” lookup for the name.
+hostfqdn = socket.getfqdn(host) //获得fqdn全域名
+socket.getservbyname('http') //查询一些规定的标准服务所对应的port号，比如http服务对应port 80，smtp服务对应25.这个例子，返回的值是80
+socket.getservbyport(80) //通过port查对应的服务，与getservbyname相反,返回'http'
+socket.getprotobyname('tcp')  //参数可以是'tcp','upd','icmp' 。返回的是在ip报文的协议号，tcp在IP报文的协议号是6。 注意参数不能是'http'，因为http在ip报文中没有协议号
+addrinfolist = socket.getaddrinfo('www.163.com','http') //返回的是一个list，比如[(2, 1, 0, '', ('111.161.22.27', 80)), (2, 1, 0, '', ('111.206.169.4', 80)), (2, 1, 0, '', ('125.39.1.138', 80))]
+                                                      其中每个元素是一个元组 (family, socktype, proto, canonname, sockaddr)
+                                                      socket.getaddrinfo的第一个参数是host，第二个参数是port,即服务端口号
+
+tcp socket server：
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) //创建一个socket对象
+address = ('localhost', 9380)
+sock.bind(address)
+sock.listen(1) // 参数意思是，接受多少个等候连接，当超过此数时server将拒绝客户端的连接申请。相当于设定了一个等候队列的长度，1代表队列长度为1，只允许1个connection等待，如果超过则会拒绝掉。通常情况下，这个值不大于5，需要操作系统支持
+connection, clientAddr = sock.accept() //connection是一个socket对象，一个新建的socket对象
+connection.settimeout(5) //对socket连接设置默认的timeout时间
+connection.setblocking(0) //设置socket为非阻塞式
+connection.close()  //对应tcp socket来说，与client通信的socket，即connection需要在finally里关闭。记住在finially关闭的都是对应于client的socket。server自己listen的socket是不关闭的
+
+server_address = (’’, 10000) //其中的ip部分为空字符串或者'0.0.0.0'，就可以绑定这机器上的所有IP，这适应一个机器有多个网卡的情况
+sock.bind(server_address)
+将socket转换为一个像文件的类
+f = sock.makefile('rw') // makefile([mode, [bufsize]]) -- return a file object for the socket [*]
+f.read() //这样就可以向操作文件一样来操作socket了
+f.write()
+f.readline()
+f.readlines()
+f.writelines()
+f.close() //注意，在使用makefile，将socket变成文件类对象时，要在finally里关闭文件对象，还有socket对象
+sock.close() //socket对象也要关闭
+
+tcp socket client:
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) //创建一个socket对象
+sock = socket.create_connection(('localhost', 9380)) //创建一个tcp的socket对象，并且执行socket.connect.这一步相当于两步
+address = ('localhost', 9380)
+sock.connect(address)
+sock.close() //client 发完数据要在finally里关闭client端的socket，即这个connection
+
+tcp socket，读写数据
+socket.send('hello world')
+socket.sendall('hello world')
+data = socket.recv(10) //10 is the buffer size
+
+udp socket server:  //主要udp server与udp client之间没有connection，因此不需要为client关闭对应的socket，即connection.close()
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server_address = (’localhost’, 10000)
+sock.bind(server_address)
+data, address = sock.recvfrom(4096)
+
+udp socket client:
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.connect(address)  //如果用sendto, recvfrom来交互数据的，就不需要connect这一步
+sock.close() //client 发完数据要在finally里关闭client端的socket，即这个connection
+sock.sendto(message, server_address)
+
+udp socket，读写数据
+data, clientAddr = sock.recvfrom(1024)
+sock.sendto('msg',clientAddr)
+
+socket server/client的总结： tcp server主要的事情 create socket, bind, listen, accept, close connection
+                             tcp client主要的事情 create socket, connect, close socket
+                             udp server主要的事情 create socket, bind
+                             udp client主要的事情 create socket, close socket
+                             对于client而言，无论tcp还是udp，都不要忘记在finally里close自己的socket
+                             对于server而言，udp从来不用考虑close socket，tcp要考虑关闭与client对应的connectiion socket
+                             tcp socket交互数据用 send, recv, sendall ,也可以makefile之后用read, readline, readlines, write, writelines
+                             udp socket交互数据用 sentto, recvfrom
+                             socket.error //socket 异常
+                             sock.shutdown() //shut down traffic in one or both directions. 请牢记，数据只有在你调用了shutdown之后，才能确保被发送
+socket死锁
+一个死锁的例子
+假设
+client的发送队列为：client_SQ，大小为 size1
+client的接收队列为：client_RQ, 大小为 size2
+server的发送队列为：server_SQ，大小为 size3
+server的接收队列为：server_RQ, 大小为 size4
+如果client试图发送一个大小为n的数据，其中n>size1+size2+size3+size4
+则会出现下面的情况：
+client发送的数据先放到client_SQ中，然后通过tcp，传到server_RQ中，server回的response，写到server_SQ，response通过tcp传输到client_RQ中
+这个过程不断地进行，但是因为client的文件很大，还没有发完，也没有read自己的client_RQ队列
+这样，最后，client_RQ队列先被灌满，然后server_SQ被灌满(因为server不断的读到client发来的数据，因此要不断地给写数据response)
+等server_SQ被灌满后，server端阻塞，什么也干不了了，不能读server_RQ了
+client端还继续发数据，送到server_RQ中，然后server_RQ被灌满
+接着client自己的client_SQ被灌满，client数据还没发完，但是因为自己的client_SQ已满，所以被阻塞。
+至此，client和server双方都被阻塞，形成死锁。
+根本原因是client端不及时读自己的client_RQ队列造成的。
+
+解决的办法是：
+服务器端的解决办法，对socket设置超时
+客户端的解决办法：1. 确保send之后，进行一次recv。2.客户端一次发送较少的数据。3 使用多线程等方法，使客户端可以同时发送和接收数据
+http://blog.chinaunix.net/uid-23146151-id-3087644.html
+http://blog.csdn.net/ns_code/article/details/15813809
+http://blog.csdn.net/huxian1234/article/details/17097433
+
+SocketServer模块 //这个模块其实是对socket包装出来的一种framework，一种server端的socket framework，本质上是源于最基本的socket操作
+处理一个request的任务被分解到两个类中，一个是server相关的类，一个是handler相关的类。自定义如何处理一个request，是在handler相关的类中通过override某些方法来实现
+server相关的类：基类是BaseServer，衍生出TCPServer和UDPServer两个最重要的类
+handler相关的类：基类是BaseRequestHandler，衍生出DatagramRequestHandler和StreamRequestHandler类
+类的结构如下：
+BaseRequestHandler
+        DatagramRequestHandler
+        StreamRequestHandler
+BaseServer
+        TCPServer
+            UDPServer
+
+Server类(TCPServer和UDPServer类)的重要方法有
+__init__(self, server_address, RequestHandlerClass, bind_and_activate=True)
+handle_request()
+serve_forever() //just calls handle_request() in an infinite loop
+shutdown()
+创建一个server
+server = SocketServer.TCPServer(address, EchoRequestHandler) //address = (’localhost’, 0), EchoRequestHandler是继承BaseRequestHandler，override handle()方法得到的新类
+server.server_address
+server.serve_forever()
+server.handle_request()
+server.shutdown()
+
+Handler类(DatagramRequestHandler和StreamRequestHandler类)的重要方法有
+__init__(self, request, client_address, server) // handler的构造函数的参数有request, client_address, server
+self.request.send(response) //reply response
+self.request.recv(2048) //recv request
+setup()
+finish()
+handle() //如何自定义处理一个request，就是通过override这个handle方法实现的.这里的request是一个socket类型
+通过self.wfile.write("response")来回response
+override handler(继承handler相关的类)的例子
+class MyHandler(SocketServer.BaseRequestHandler):
+    def handle():
+        '''自定义部分'''
+
+override server(继承server相关的类)的例子
+class MyThreadServer(SocketServer.ThreadingMixIn,SocketServer.TCPServer):  //SocketServer.ThreadingMixIn是server支持多线程，注意继承的前后顺序不能变
+    pass
+class MyProcServer(SocketServer.ForkingMixIn,SocketServer.TCPServer):  //SocketServer.ForkingMixIn是server支持多进程，注意继承的前后顺序不能变
+    pass
+
+总结，SocketServer模块重要的类有：TCPServer,UDPServer,BaseRequestHandler,ThreadingMixIn,ForkingMixIn,
+server重要的方法有: serve_forever(), handle_request(), shutdown()
+handler重要的方法有：handle()
+
+
+asyncore模块，这个模块也是对socket模块的包装
+asynchat模块，这个模块也是对socket模块的包装
+
+
+Queue模块
+q = Queue.Queue(10) //创建一个队列，先进先出队列
+q.put() //队列尾加一个
+q.get() //队列头取一个
+q.empty() //返回队列是否为空
+
+q = Queue.LifoQueue() //创建一个队列，先进后出队列，即相当于stack
+
+
+
+BaseHTTPServer模块，实现Web Servers的基础类，BaseHTTPServer使用SocketServer模块来创建HTTP servers.
+BaseHTTPServer中的重要类有
+BaseHTTPRequestHandler：重要的方法有，do_XXX()如do_GET,do_POST, send_header(k,v), end_headers(), send_response(code,body), send_error(code,body), handle()
+HTTPServer: 重要的方法有，serve_forever(), handle_request(), shutdown()
+例子
+class PostHandler(BaseHTTPRequestHandler):
+    def do_POST(self):
+        '''自定义'''
+server = BaseHTTPServer.HTTPServer((’localhost’, 8080), PostHandler)
+server.serve_forever()
+多线程的server
+class ThreadedHTTPServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer): //注意顺序不能变
+server = ThreadedHTTPServer((’localhost’, 8080), PostHandler)
+server.serve_forever()
+
+HTTP response
+response有headers, status code, and body组成
+
+server这边的演变路线：socket -> SockServer模块(TCPServer) -> BaseHTTPServer模块(HTTPServer) -> ...> Django
+client这边的演变路线: socket -> httplib
+
+
+
+
+urlparse模块，用来解析和组合url
+解析url，urlparse.urlparse(url)
+>>> url = 'http://user:pwd@NetLoc:80/p1;param/p2;param?query=arg#frag'
+>>> parsed = urlparse.urlparse(url)
+>>> print parsed
+ParseResult(scheme='http', netloc='user:pwd@NetLoc:80', path='/p1;param/p2', params='param', query='query=arg', fragment='frag')
+>>> parsed.scheme
+'http'
+组合url，urlparse.urlunparse(parsed)
+>>> orig = urlparse.urlunparse(parsed)
+>>> print orig
+http://user:pwd@NetLoc:80/p1;param/p2;param?query=arg#frag
+更改url, urlparse.urljoin(url,substitue)
+>>> url = 'http://www.example.com/path1/path2/file.html'
+>>> urlparse.urljoin(url,'newfile.html')
+'http://www.example.com/path1/path2/newfile.html'
+>>> urlparse.urljoin(url,'/newfile.html')
+'http://www.example.com/newfile.html'
+>>> urlparse.urljoin(url,'/path3/path4/newfile.html')
+'http://www.example.com/path3/path4/newfile.html'
+
+
+
+urllib模块 - 是http client端的模块
+response = urlopen(url, data=None, proxies=None)  //返回一个像本地文件一样操作这个类文件对象,如果有参数data的值，则表示以post方式提交到url的数据，否则以Get方式提交，参数proxies用于设置代理
+filename, headers = urlretrieve(url, filename=None, reporthook=None, data=None)  //从url下载数据，参数filename指定了下载数据保存到本地时的文件名, 参数reporthook是一个回调函数，当连接上服务器、以及相应的数据块传输完毕的时候会触发该回调。我们可以利用这个回调函 数来显示当前的下载进度，这个回调函数要三个参数分别是blocks_read(已下载的blcok数目), block_size, total_size. 参数data表示以post方式提交到url的数据。 该方法返回一个包含两个元素的元组(filename, headers)，filename表示保存到本地的路径，headers表示服务器的响应头
+urlclearup() //如果filename参数没提供，系统将建一个临时文件，urlclearup()操作能删除这个临时文件
+urllib.urlencode(query_args) //将dict类型的参数编码。传递给server的参数，必须要encode以后才可以。将成对的数据按照URL中的要求组成一个参数字符串
+urllib.quote(url) // 该函数会将所有非保留的字符转化成%xx这样的形式，其中xx为两位的十六进制数
+例子
+response = urllib.urlopen('http://www.163.com')
+html = response.read();
+
+filename, headers = urllib.urlretrieve('http://www.163.com', '163.html')
+使用urlopen，与urlretrieve的区别是，用urlopen是可以把数据读到内存里，而urlretrieve是把读出的数据保存在本地的文件里
+
+query_args = { ’q’:’query string’, ’foo’:’bar’ }
+encoded_args = urllib.urlencode(query_args)
+url = url + encoded_args
+
+比较urllib.urlencode，urllib.quote, urllib.quote_plus.从中可看成urlencode与quote_plus转换后的字符串一致，与quote稍有区别(对'/'的处理有点区别)，但也基本一致
+>>> url = 'http://localhost:8080/~dhellmann/'
+>>> urllib.urlencode({'url':url})
+'url=http%3A%2F%2Flocalhost%3A8080%2F%7Edhellmann%2F'
+>>> urllib.quote(url)
+'http%3A//localhost%3A8080/%7Edhellmann/'
+>>> urllib.quote_plus(url)
+'http%3A%2F%2Flocalhost%3A8080%2F%7Edhellmann%2F'
+>>> urllib.unquote('http%3A//localhost%3A8080/%7Edhellmann/')
+'http://localhost:8080/~dhellmann/'
+>>> urllib.unquote_plus('http%3A%2F%2Flocalhost%3A8080%2F%7Edhellmann%2F')
+'http://localhost:8080/~dhellmann/'
+总结urllib模块：常用的函数有
+                response = urllib.urlopen(url,data,proxies)
+                   response.read() // 得到对应url的一个全部html数据。相当于http的body?
+                   response.info() // 得到一个httplib.HTTPMessage对象，里面包含reponse中http header的信息，如response.info().getheader('Date')返回，Date header的值
+                   response.getcode() //得到response中的http status code
+                filename, headers = urllib.urlretrieve(url,filename,reporthook,data)
+                urllib.urlclearup()
+                string = urllib.urlencode({'param1':'value1','param2':'value2'})
+                string = urllib.quote(url)
+                string = urllib.quote_plus(url)
+                string = urllib.unquote(encoded_url)
+                string = urllib.unquote_plus(encoded_url)
+
+
+urllib2模块
+request = urllib2.Request(’http://localhost:8080/’)
+request.add_header(
+’User-agent’,
+’PyMOTW (http://www.doughellmann.com/PyMOTW/)’,
+)
+request.add_data(urllib.urlencode(query_args)) //add_data的作用不是累积的，每一次add_data都会替换掉之前的data
+response = urllib2.urlopen(request)
+data = response.read()
+异常urllib2.URLError
+任何在连接过程中产生的异常都是urllib2.URLError的实例
+request = urllib2.Request('http://www.163.com')
+try:
+    response = urllib2.urlopen(request)
+except urllib2.URLError, e:
+    print e
+
+Python访问网页主要有三种方式： urllib, urllib2, httplib
+三者之中，httplib更为底层，可以理解urlib和urllib2是对httplib的更高级封装
+
+server这边的演变路线：socket -> SocketServer模块(TCPServer) -> BaseHTTPServer模块(HTTPServer), SimpleXMLRPCServer模块(SimpleXMLRPCServer)...> Django
+client这边的演变路线: socket -> httplib -> urllib , xmlrpclib -> Requests( HTTP library)
+
+SimpleXMLRPCServer模块 (Server端的模块)
+address = (’localhost’, 9000)
+server = SimpleXMLRPCServer.SimpleXMLRPCServer(address)
+server.register_function(handler) //handler是一个函数，用来处理request
+server.register_instance(instance) //与注册一个函数handler类似，这是注册一个类的实例对象，client端可以调用这个instance中的方法
+server.serve_forever()
+注意这两步server = SimpleXMLRPCServer.SimpleXMLRPCServer(address)
+          server.register_function(handler)
+不等于这样
+      server = SimpleXMLRPCServer.SimpleXMLRPCServer(address,handler)
+
+
+对应的client模块xmlrpclib
+proxy = xmlrpclib.ServerProxy(’http://localhost:9000’)
+proxy.handler(param)
+
+例子：
+server端：
+import SimpleXMLRPCServer
+def handler(name):
+    return 'Welcome : %s'  % name
+address = ('localhost',9380)
+server = SimpleXMLRPCServer.SimpleXMLRPCServer(address)
+server.register_function(handler)
+server.serve_forever()
+
+client端：
+import xmlrpclib
+proxy = xmlrpclib.SeverProxy('http://localhost:9380')
+proxy.handler('World Cup') //注意这里用的函数名'handler'必须与server端注册的函数名一致
+结果在client端输出 Welcome : World Cup
+
+
+server这边的演变路线：socket -> SockServer模块(TCPServer) -> BaseHTTPServer模块(HTTPServer), SimpleXMLRPCServer模块(SimpleXMLRPCServer)...> Django
+client这边的演变路线: socket -> urllib, urllib2 -> httplib , xmlrpclib
+
+
+基本的HTML
+<HTML>
+<HEAD>
+<TITLE>Document title</TITLE>
+</HEAD>
+<BODY>
+this is my text
+</BODY>
+</HTML>
+解析HTML的模块HTMLParser
+import HTMLParser
+p = HTMLParser.HTMLParser()
+p.feed(data)
+....
+p.close()
+
+
+XML用来表示数据的，包括数据的内容和结构
+以HTML不同的是，XML并没有指明哪些标签是有效标签，哪些标签是必须用的。
+解析XML的模块DOM(基于树的解析。此外还有一种基于事件的解析，比如SAX模块)
+DOM是基于树的解析，是把XML全部解析，存入内存，优点是：简单，易于修改。缺点是：占内存，对于很大的XML，会有问题
+SAX是基于事件的解析，优点是：更灵活，能处理很大的XML。缺点是：没DOM简单易用
+
+DOM模块
+DOM 是这样规定的，XML 文档中的每个成分都是一个节点：
+整个文档是一个文档节点(DOCUMENT_NODE)
+每个 XML 元素是一个元素节点(ELEMENT_NODE)
+包含在 XML 元素中的文本是文本节点(TEXT_NODE)
+每一个 XML 属性是一个属性节点(ATTRIBUTE_NODE)
+注释是注释节点(COMMENT_NODE)
+sample.xml文件的内容如下：
+<bookstore>
+<book category="cooking">
+<title lang="en">Everyday Italian</title>
+<author>Giada De Laurentiis</author>
+<year>2005</year>
+<price>30.00</price>
+</book>
+</bookstore>
+其中，<title lang="en">Everyday Italian</title>是文档节点(一个完整的<xx></xx>就是一个文档节点)
+      <title lang="en">是元素节点，在 DOM 处理中一个普遍的错误是，认为元素节点包含文本
+      Everyday Italian是文本节点
+      lang="en"是属性节点
+
+from xml.dom import minidom, Node
+doc = minidom.parse('sample.xml')
+root = doc.documentElement  //返回的是根节点
+root.toxml() //本节点的xml字符串。因为此时root是根节点，所以返回的是整个xml
+root.childNodes //返回一个list，元素是bookstore的子节点，bookstore有三个子节点，前后两个是TEXT_NODE r'\n',中间的是ELEMENT_NODE book
+                  所以要得到book节点，需要判断child.nodeType==root.ELEMENT_NODE
+
+root.nodeType  //ELEMENT_NODE
+root.nodeValue
+root.nodeName
+root.getAttribute('category')
+root.getElementsByTagName('book') //得到的是一个list，可能多个book节点组成的list
+
+使用DOM解析xml文档
+例子：得到year的值2005
+<bookstore>
+<book category="cooking">
+<title lang="en">Everyday Italian</title>
+<author>Giada De Laurentiis</author>
+<year>2005</year>
+<price>30.00</price>
+</book>
+</bookstore>
+方法一：不用getElementsByTagName
+from xml.dom import minidom
+doc = minidom.parse('C:\Users\gushi\Desktop\work\python practice\sample.xml')
+root = doc.documentElement
+for root_child_node in root.childNodes:
+    if root_child_node.nodeType == root.ELEMENT_NODE and root_child_node.nodeName == 'book' and root_child_node.getAttribute('category') == 'cooking':
+        book_node = root_child_node
+        for book_child_node in book_node.childNodes:
+            if book_child_node.nodeName == 'year':
+                year_node = book_child_node
+                year_value = year_node.childNodes[0].nodeValue
+                print year_value
+方法二，用getElementsByTagName
+from xml.dom import minidom
+doc = minidom.parse('C:\Users\gushi\Desktop\work\python practice\sample.xml')
+root = doc.documentElement
+year_value = root.getElementsByTagName('year')[0].childNodes[0].nodeValue
+print year_value
+
+使用DOM生成一个xml文档
+
+
+
+Python为什么没有接口？
+以下回答来自网络
+
+接口只是个空盒子。
+没有任何逻辑作用。
+接口做什么呢？
+在静态语言中，
+在不知道变量类型的情况下，
+不可以调用其成员，
+而使用了接口，
+便可以调用特定方法。
+这就是接口的全部意义了。
+
+因为Python可以多继承
+接口只是不能多继承的语言为了解决多继承问题而采取的变相方法而已
+
+
+一个列表里的元素可能有重复的，如何去掉列表中重复的元素？
+最简单的方法是用set(list)
+
+集合set的操作
+x in set
+len(set)
+for x in set
+交集：s & t 或者s.intersection(t)
+并集：s | t 或者s.union(t)
+差集：s - t 或者s.difference(t)   //求差集（项在s中，但不在t中）
+对称差集：s ^ t  或者 s.symmetric_difference(t)//对称差集（项在s或t中，但不会同时出现在二者中）
+s >= t //集合s包含集合t
+s <= t  //集合t包含集合s
+
+s.add('x')    //向集合中添加一项
+s.update([1,2,3])  //向集合中添加多项
+s.remove('x')  //删除一项
+
+list的交，并，差集操作：
+先对两个list排序，然后比较
+
+
+
+
+Python是优雅的，使用这些库可以使你的代码更简洁，并保持持久性。欢迎各位补充，并提出意见！
+
+Docopt。抛弃optparse和argparse吧，使用docstrings来构建优雅的，可读性强的，并且复杂（如果你需要的话）的命令行界面。IMO2013年创建的最好的库。
+Requests，或称为人类使用的HTTP，是一个处理HTTP请求更为pythonic 的方法，比urllib2更更更好用。口碑可见，他在PyPI上下载已经超过5,000,000次 :) 。
+lxml是libxml2和libxslt的合体。如果你要处理XML或HTML，lxml是最好的选择。
+Bottle是一个快速，简单，轻量级的WSGI微型web框架。几秒内就能构建小型站点和APIs。所有的框架只有一个py文件，你甚至可以放进任意目录。
+sh是一个成熟的Python子进程界面工具，允许你像运行函数一样运行任何程序。超级好用。
+Structlog是一个先进的日志记录处理器。他集成了多个现存的日志记录工具，包含了Python标准库。你可以创建普通记录器，按你所想增加内容，使你的日志拥有持久性和可读性。
+Watchdog是一个跨平台的Python库和shell工具，可以监视文件系统事件。超级好用，并且容易上手。
+Delorean可以是你用非常方便的方法来处理数据和时间。设置时区，截取到秒，分，小时，或者甚至使用特殊方法从一个数据迭代到另一个。浏览下文档，里面有很多示例。
+
+
+
+Python中enum如何定义？可以用class来代替
+class Directions:
+    up = 0
+    down = 1
+    left = 2
+    right =3
+
+print Directions.down
+
+glob模块
+globpython自己带文件操作相关模块用查找符合自己目文件类似于Windows下文件搜索支持通配符操作*,?,[]三通配符*代表0或多字符?代表字符[]匹配指定范围内字符[0-9]匹配数字，主要方法glob,该方法返回所有匹配文件路径列表
+glob.glob(r'/home/sun/ptest/*.py')
+
+
+__future__ 模块
+从Python 2.1开始，当一个新的语言特性首次出现在发行版中时，如果该特性与旧版Python不兼容，则该特性将被默认禁用。要启用这些特性，使用语句 ’from __future__ import *‘。
+
+
+def bubblesort(numbers):
+    length = len(numbers)
+    for i in range(length-1)):
+        for j in range(length-i-1):
+            if numbers[j] > numbers[j+1]:
+
+
+for(int i=0;i<length;i++){
+      for(int j=0;j<length-i-1;j++)
+
+
+
+python中用字典代替switch语句的例子
+def funa():
+    print "hello a"
+
+def funb():
+    print "hello b"
+
+opt={'a':funa,'b':funb}
+
+
+def f(c):
+    global opt
+    opt.get(c)()
+if __name__=='__main__':
+    global opt
+    c = 'a'
+    f(c)
+
+
+如何判断一个列表为空？
+if not a:
+    print "List is empty"
+#不要用len(a)来判断,效率低
+
+
+
+
+
+python中self，cls
+普通的方法，第一个参数需要是self，它表示一个具体的实例本身。
+如果用了staticmethod，那么就可以无视这个self，而将这个方法当成一个普通的函数使用。
+而对于classmethod，它的第一个参数不是self，是cls，它表示这个类本身。
+>>> class A(object):
+    def foo1(self):
+        print "Hello",self
+    @staticmethod
+    def foo2():
+        print "hello"
+    @classmethod
+    def foo3(cls):
+        print "hello",cls
+静态方法：无法访问类属性、实例属性，相当于一个相对独立的方法，跟类其实没什么关系，换个角度来讲，其实就是放在一个类的作用域里的函数而已。
+类成员方法：可以访问类属性，无法访问实例属性。
+类方法和静态方法都可以被类和类实例调用，类实例方法仅可以被类实例调用
+类方法的隐含调用参数是类，而类实例方法的隐含调用参数是类的实例，静态方法没有隐含调用参数
+
+
+
+tcp的ip协议号6
+udp的ip协议号17
+tcp,udp,ip三者之中udp的header里没有首部长度，因为udp的header是固定的8字节，tcp的长度是20固定+40可选字节
+以太网中数据帧的长度最大1500字节
+The building block of NFS is Sun RPC
+
+
+linux participant
+
+/             ,root for mount
+/boot         ,boot info
+/home         ,for user
+/root         ,root home directory
+/usr          ,installed software
+/usr/local    ,installed big software
+/etc          ,system configure files
+/dev          ,io
+/proc         ,system info
+/bin          ,system command
+/sbin         ,system tool for root
+/var          ,logs
+/opt          ,install software
+/tmp          ,temp file
+
+linux上抓包命令
+tcpdump -i eth2 -s 0  port 3868 -w dia.cap
+
+redhat linux 系统下几种安装软件的办法
+1. 源码安装
+make
+make install
+./configure
+2. rpm包安装
+rpm -qa | grep httpd　
+rpm -ivh file.rpm 　＃[安装新的rpm]--install--verbose--hash
+3. yum安装 (软件包管理器。基於RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软体包，无须繁琐地一次次下载、安装)
+yum install 全部安装
+yum install package1 安装指定的安装包package1
+
+
+httplib模块
+conn = httplib.HTTPConnection(host,port,timeout=60)
+conn.request("POST", url, body, commonheaders)
+conn.request("GET", url, '', commonheaders)
+conn.request("DELETE", url, '', commonheaders)
+response = conn.getresponse()
+response.getheaders()
+response.status
+data = response.read()
+conn.close()
+
+
+
+python的帮助函数
+1. help
+2. type
+3. dir
+
+
+
+ConfigParser模块
+OptionParser模块
+
+
+
+
+__future__
+__init__
+__main__
+__name__
+__str__
+__import__  : Direct use of __import__() is rare, except in cases where you want to import a module whose name is only known at runtime.
+sample: sysalias = __import__("sys")
+        print sysalias.path
+
+
+
+
+############################################################################
+Python中有6中内建序列数据结构： 列表，元组，字符串，unicode字符串，buffer对象，xrange对象
+
+
+python中对List的操作举例
+1. seqence的方法：索引，切边，加乘，最值，长in，count，index
+2. 增删查改+替换的方法：
+更改某个位置上的值，长度不变
+>>> l=[1,2,3,4]
+>>> l[3]=10
+>>> l
+[1, 2, 3, 10]
+插入的方法1
+>>> l=[1,2,3,4]
+>>> l[3:3]=['hello']
+>>> l
+[1, 2, 3, 'hello', 4]
+插入的方法2
+>>> l=[1,2,3,4]
+>>> l[3:3]='hello'
+>>> l
+[1, 2, 3, 'h', 'e', 'l', 'l', 'o', 4]
+插入的方法3
+>>> l=[1,2,3,4]
+>>> l.insert(3,'hello')
+>>> l
+[1, 2, 3, 'hello', 4]
+在结尾追加对象
+>>> l=[1,2,3,4]
+>>> l.append(5)
+>>> l
+[1, 2, 3, 4, 5]
+在结尾追加对象
+>>> l=[1,2,3,4]
+>>> l.extend([6,7,8,9])
+>>> l
+[1, 2, 3, 4, 6, 7, 8, 9]
+在结尾追加对象
+>>> l=[1,2,3,4]
+>>> l + [5,6,7,8]
+[1, 2, 3, 4, 5, 6, 7, 8]
+在结尾处删除对象
+>>> l=[1,2,3,4]
+>>> l.pop()
+4
+>>> l
+[1, 2, 3]
+删除表中的某一项(根据值来删除)
+>>> l=['a','b','c','d']
+>>> l.remove('c')
+>>> l
+['a', 'b', 'd']
+删除表中的某一项（根据index来删除）
+>>> l=['a','b','c','d']
+>>> del l[2]
+>>> l
+['a', 'b', 'd']
+排序和reverse
+>>> l=[1,2,3,4]
+>>> l.reverse()
+>>> l
+[4, 3, 2, 1]
+>>> l.sort()
+>>> l
+[1, 2, 3, 4]
+
+
+Python中对tuple的操作举例
+1. seqence的方法：索引，切边，加乘，最值，长in，count，index
+2. 增删查改的方法： 因为tuple是不可变对象，所以没有其他的方法
+
+Python中对str的操作举例（str是不可变类型）
+1. seqence的方法：索引，切边，加乘，最值，长in，count，index
+2. 增删查改+替换+格式化的方法：
+格式化输出
+>>> 'hello %s, are you ok? %s' % ('Liming','yes')
+'hello Liming, are you ok? yes'
+>>> d={'name':'Liming','ok':'yes'}
+>>> 'hello %(name)s, are you ok? %(ok)s' % d
+'hello Liming, are you ok? yes'
+在结尾处追加
+>>> 'hello' + ' world'
+'hello world'
+替换方法(find/replace/translate)
+>>> s='Hello world'
+>>> s.find('world')
+6
+>>> s.replace('world','man')
+'Hello man'
+>>> from string import maketrans  //translate方法是用来替换单个字符的，有两个参数，第一个参数是一个转换表，第二个参数是删除掉的字符
+>>> table = maketrans('cs','kz') //利用string.maketrans方法来建立一个转换表，该表是将字符'c'转为'k',将字符's'转为'z'
+>>> 'this is an incredible test'.translate(table)
+'thiz iz an inkredible tezt'
+>>> 'this is an incredible test'.translate(table,' ')//第二个参数是要去掉的字符
+'thizizaninkredibletezt'
+join/split方法
+>>> s
+'Hello world'
+>>> s.split()
+['Hello', 'world']
+>>> s.split('o')
+['Hell', ' w', 'rld']
+>>> l
+['Hello', 'world']
+>>> ' '.join(l)
+'Hello world'
+
+大小写/strip
+>>> s
+'Hello world'
+>>> s.lower()
+'hello world'
+>>> s.upper()
+'HELLO WORLD'
+>>> ' hello world '.strip()
+'hello world'
+
+>>> s='/a/b/c/d'
+>>> s.split('/')
+['', 'a', 'b', 'c', 'd']
+>>> s.split('/')[-1]
+
+Python中对dict的操作举例（字典的key是不可变类型，如int，string，float，tuple）
+clear（）方法，清空字典
+建立字典的方法（从原有字典copy出一份）
+浅copy
+>>> x={1:1,2:[1,2,3]}
+>>> y=x.copy()
+>>> y
+{1: 1, 2: [1, 2, 3]}
+深copy
+>>> from copy import deepcopy
+>>> x={1:1,2:[1,2,3]}
+>>> y=deepcopy(x)
+>>> y
+{1: 1, 2: [1, 2, 3]}
+建立字典的方法（从原有字典update）
+>>> x={1:1,2:2}
+>>> y={1:1,3:3}
+>>> x.update(y)
+>>> x
+{1: 1, 2: 2, 3: 3}
+建立字典的方法（从空字典开始建新字典）
+利用fromkeys方法
+>>> {}.fromkeys(['name','age'])
+{'age': None, 'name': None}
+>>> {}.fromkeys(['name','age'],'default')  //如果不想None作为默认值的话，也可以在第二个参数中自己提供默认值
+{'age': 'default', 'name': 'default'}
+建立字典的方法（从空字典开始建新字典）
+直接赋值
+>>> d={}
+>>> d['name']='Limimg'
+>>> d['age']=12
+>>> d
+{'age': 12, 'name': 'Limimg'}
+字典取值get方法
+>>> d={'name':'Liming','age':12}
+>>> d.get('name')
+'Liming'
+>>> d.get('age')
+字典取值pop方法
+>>> d={'name':'Liming','age':12}
+>>> d.pop('age')
+12
+>>> d
+{'name': 'Liming'}
+删除一项
+>>> d={'name':'Liming','age':12}
+>>> del d['age']
+>>> d
+{'name': 'Liming'}
+字典遍历
+>>> d={'age': 12, 'name': 'Limimg'}
+>>> d.keys()
+['age', 'name']
+>>> d.values()
+[12, 'Limimg']
+>>> d.items()
+[('age', 12), ('name', 'Limimg')]
+>>> d.has_key('age')
+True
+>>> d.iterkeys()
+<dictionary-keyiterator object at 0x00000000022FAC78>
+>>> d.itervalues()
+<dictionary-valueiterator object at 0x00000000022FAC78>
+>>> d.iteritems()
+<dictionary-itemiterator object at 0x00000000022FAC78>
+
+集合set
+创建一个set：通常情况下，是将一个sequence丢到set里面，比如把str，tuple或list丢到set里面，如set([1,2,3,4])
+x in set
+len(set)
+for x in set
+交集：s & t 或者s.intersection(t)
+并集：s | t 或者s.union(t)
+差集：s - t 或者s.difference(t)   //求差集（项在s中，但不在t中）
+对称差集：s ^ t  或者 s.symmetric_difference(t)//对称差集（项在s或t中，但不会同时出现在二者中）
+s >= t //集合s包含集合t
+s <= t  //集合t包含集合s
+
+s.add('x')    //向集合中添加一项
+s.update([1,2,3])  //向集合中添加多项
+s.remove('x')  //删除一项
+
+断言
+assert
+
+并行迭代：
+比如用for循环同时迭代连个列表
+for i,j in zip(list1,list2):
+    print i,j
+zip函数也可以作用于任意多的序列
+>>> list1
+[1, 2, 3, 4, 5]
+>>> list2
+[6, 7, 8, 9, 0]
+>>> list3
+['a', 'b', 'c']
+>>> zip(list1,list2)
+[(1, 6), (2, 7), (3, 8), (4, 9), (5, 0)]
+>>> zip(list1,list3)
+[(1, 'a'), (2, 'b'), (3, 'c')]
+>>> zip(list1,list2,list3)
+[(1, 6, 'a'), (2, 7, 'b'), (3, 8, 'c')]
+
+编号迭代
+>>> list3
+['a', 'b', 'c']
+>>> for index,item in enumerate(list3):
+...     print " index is %d, item is %s" % (index,item)
+...
+ index is 0, item is a
+ index is 1, item is b
+ index is 2, item is c
+
+反转迭代和排序迭代
+>>> list1
+[5, 3, 4, 1, 2]
+>>> for i in sorted(list1):
+...     print i
+...
+1
+2
+3
+4
+5
+>>> for j in reversed(list1):
+...     print j
+...
+2
+1
+4
+3
+5
+
+for else; while else语句中的else部分，在循环正常结束后会得到执行，但是在因break而退出循环的时候，不会得到执行
+>>> for i in range(5):
+...     print i
+... else:
+...     print 'no break'
+...
+0
+1
+2
+3
+4
+no break
+>>>
+>>>
+>>> for i in range(5):
+...     print i
+...     if i==3:
+...         break
+... else:
+...     print 'no break'
+...
+0
+1
+2
+3
+>>>
+
+列表推导式，字典推导式
+>>> {i:i for i in xrange(5)}
+{0: 0, 1: 1, 2: 2, 3: 3, 4: 4}
+>>> [ i for i in xrange(5)]
+[0, 1, 2, 3, 4]
+>>>
+
+
+import module
+import module as module1
+from module import method
+from module import method as method1
+from module import *
+
+Python语言很重要的一个特点是，他的类型是属于对象的，而不是变量(即指向对象的引用)。引用是没有类型的，实际的对象具有类型的。这点上和Java是完全不同的，Java是强类型语言，引用是具有类型的，而对象是没有类型的。
+
+
