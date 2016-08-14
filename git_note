@@ -1,3 +1,18 @@
+git config -e // config username, email, etc
+git clone [url] //clone a repository in local based on remote repository
+git status //see local status
+git add [file]  //add file to temporary buffer
+git rm [file]  //remove file from temporary buffer
+git mv [file] [file] //rename file in temporary buffer
+git commit -m [comment] //commit change to local repository from temporary buffer
+git tag  //list all tags
+git tag [tag] //tag current commit
+git push origin :refs/tags/[tag] //delete tag from remote repository
+git push origin --delete [branch-name]  //delete branch from remote repository
+git push origin [branch] //upload local branch to remote origin branch
+git push origin [tag] //commit change to remote repository based on local repository
+git pull //get update from remote repository to local repository
+
 References:
 http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html
 
