@@ -3,7 +3,7 @@ __author__ = 'gshi'
 
 '''
 python类的多继承顺序是有类的__mro__属性决定的，可以通过查看类的__mro__属性来知道类的调用顺序和初始化的顺序。值得注意的是，类属性(包括类的方法)的调用顺序是与__mro__的顺序完全一致的，
-但是类的初始化顺序正好与__mro__的顺序相反. Python的多继承顺序是比较特殊的，既不是深度优先也不是广度优先。
+但是类的初始化顺序正好与__mro__的顺序相反. Python的多继承顺序是深度优先。
 '''
 class MotherFamily(object):
     first_name = 'Zhang'
@@ -39,6 +39,8 @@ class MyFamily(MotherFamily,FatherFamily):
 
 
 class A(object):
+    inheritable = 'inheritable'
+    __uninheritable = 'uninheritable'  #__开头的变量是不能被继承的，属于private成员变量
     def __init__(self):
         super(A, self).__init__()
         print "A!"
@@ -120,4 +122,12 @@ print '#'*10
 mix = ABCD()
 print '#'*10
 mix.hello()
+print mix.inheritable
+print mix.__inheritable
+print mix.__doc__
+print mix.__class__
+print mix.__module__
+print mix.__str__
+print mix.__dict__
+
 
