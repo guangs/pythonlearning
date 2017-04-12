@@ -49,3 +49,34 @@ for item in results_iterator:
 
 
 
+#############################################################
+# Skills - Know	How Closures Interact with Variable Scope
+#############################################################
+
+# If a variable in the closure needs interact with the function in which the closure is defined, that
+# variable should not be re-define or override by the closure, the variable should be defined in the
+# outer function, and be used by the closure.
+
+# in this function, found variable is overrided by the helper, so it is not a interactive variable
+# it will not work as we expected
+def	sort_priority1(numbers,	group):
+    found =	False
+    def	helper(x):
+        if x in group:
+            found = True		# Seems	simple
+            return (0,x)
+        return (1,x)
+    numbers.sort(key=helper)
+    return found
+
+# This is the correct way, in this way, found is not defined in helper function, helper function just
+# use found variable that was defined in outer function
+def	sort_priority2(numbers,	group):
+    found =	[False]
+    def	helper(x):
+        if x in group:
+            found[0] = True		# Seems	simple
+            return (0,x)
+        return (1,x)
+    numbers.sort(key=helper)
+    return found[0]
