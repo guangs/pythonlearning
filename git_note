@@ -16,6 +16,15 @@ git pull //get update from remote repository to local repository
 References:
 http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html
 
+step by step example: create a repository in local and upload it to github
+1. git init  //create a repository in local
+2. git add -A  //add all files into local temporary buffer
+3. git commit -m 'notebook' //submit all files to local repository
+4. create a notebook repository in github website, and web url is https://github.com/guangs/notebook.git
+5. git remote add origin https://github.com/guangs/notebook.git  // add github as remote repository for local repository
+6. git push -u origin master  //upload local repository to remote repository (github notebook)
+
+ 
 一、新建代码库
 
 # 在当前目录新建一个Git代码库

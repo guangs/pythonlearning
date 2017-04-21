@@ -972,7 +972,7 @@ server.serve_forever()
 HTTP response
 response有headers, status code, and body组成
 
-server这边的演变路线：socket -> SockServer模块(TCPServer) -> BaseHTTPServer模块(HTTPServer) -> ...> Django
+server这边的演变路线：socket -> SockServer模块(TCPServer) -> BaseHTTPServer模块(HTTPServer) -> WSGIServer -> Bottle ...> Django
 client这边的演变路线: socket -> httplib
 
 
@@ -1703,6 +1703,7 @@ from module import *
 Python语言很重要的一个特点是，他的类型是属于对象的，而不是变量(即指向对象的引用)。引用是没有类型的，实际的对象具有类型的。这点上和Java是完全不同的，Java是强类型语言，引用是具有类型的，而对象是没有类型的。
 
 
+<<<<<<< HEAD
 import logging
 python logging模块总结
 1. create logger
@@ -1741,3 +1742,6 @@ logger.addHandler(ch)
 #记录一条日志
 logger.info('foobar')
 ====================================
+=======
+Python反射即想到4个内置函数分别为:getattr、hasattr、setattr、delattr  获取成员、检查成员、设置成员、删除成员
+>>>>>>> origin/master
