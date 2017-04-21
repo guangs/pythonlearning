@@ -1703,3 +1703,41 @@ from module import *
 Python语言很重要的一个特点是，他的类型是属于对象的，而不是变量(即指向对象的引用)。引用是没有类型的，实际的对象具有类型的。这点上和Java是完全不同的，Java是强类型语言，引用是具有类型的，而对象是没有类型的。
 
 
+import logging
+python logging模块总结
+1. create logger
+2. create handler
+3. create format/filter
+4. handler add format/filter
+5. logger add handler
+6. logger set level
+====================================
+#!/usr/bin/env python
+#encoding: utf-8
+
+import logging
+
+#创建一个logger实例
+logger = logging.getLogger('mylogger')
+logger.setLevel(logging.DEBUG)
+
+#创建一个handler,用于写入日志文件
+fh = logging.FileHandler('simple_log.log')
+fh.setLevel(logging.DEBUG)
+
+#创建一个handler,用于输出到控制台
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+
+#定义handler的输出格式
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+ch.setFormatter(formatter)
+
+#给logger添加handler
+logger.addHandler(fh)
+logger.addHandler(ch)
+
+#记录一条日志
+logger.info('foobar')
+====================================
